@@ -17,6 +17,7 @@ export default class ArchiveNotes extends Component {
         signIn : false,
         notes : null,
         data : [], 
+        ArchiveNotes : true,
     };
   }
 
@@ -34,6 +35,7 @@ export default class ArchiveNotes extends Component {
   }
   componentDidMount = () => {
     getArchiveNotes((notes)=>{
+        if(notes != null ) { 
           this.setState({
               notes : notes,
           })
@@ -45,11 +47,13 @@ export default class ArchiveNotes extends Component {
           this.setState({
               data : data
           })
+        }
       })
       
   }
 
   render() {
+      console.log(" Archive data",this.state.data);
     return (
       <View style = { styles.mainView }>
            
@@ -74,7 +78,7 @@ export default class ArchiveNotes extends Component {
                 </Appbar.Content>
                 
                 <Appbar.Action
-                  icon = 'search'
+                  icon = 'magnify'
                   size = { 24 }
                   onPress = { ()=>{ console.log("hiii");
                   }}
@@ -105,6 +109,8 @@ export default class ArchiveNotes extends Component {
                                 Data = { item.note }
                                 GridStatus = { this.state.gridNotes }
                                 navigateToCreateNotes = { this.navigateToCreateNotes }
+                                Date = { item.Date}
+                                ArchiveNotes = { this.state.ArchiveNotes }
                             /> 
                         }
                     />
@@ -122,6 +128,7 @@ export default class ArchiveNotes extends Component {
                                     Data = { item.note }
                                     GridStatus = { this.state.gridNotes }
                                     navigateToCreateNotes = { this.navigateToCreateNotes }
+                                    Date = { item.Date }
                                 /> 
                             }
                         />
@@ -129,7 +136,7 @@ export default class ArchiveNotes extends Component {
                     }
 
             </View>
-
+            
         </View>
 
     );

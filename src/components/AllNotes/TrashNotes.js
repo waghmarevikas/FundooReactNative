@@ -20,11 +20,12 @@ export default class TrashNotes extends Component {
     };
   }
 
-//   navigateToCreateNotes = (noteObj) => {
-//         this.props.navigation.navigate('CreateNotes', { 'noteObj': noteObj })
-//   }
+  navigateToCreateNotes = (noteObj) => {
+        this.props.navigation.navigate('CreateNotes', { 'noteObj': noteObj })
+  }
   componentDidMount = () => {
     getTrashNotes((notes)=>{
+        if( notes != null ){ 
           this.setState({
               notes : notes,
           })
@@ -36,6 +37,7 @@ export default class TrashNotes extends Component {
           this.setState({
               data : data
           })
+        }
       })
       
   }
@@ -66,7 +68,7 @@ export default class TrashNotes extends Component {
 
                 <Appbar.Action 
                     style = {{marginRight : '5%'}}
-                    icon = {this.state.gridNotes ? 'more' : 'more' }
+                    icon = {this.state.gridNotes ? 'dots-vertical' : 'dots-vertical' }
                     >
                 </Appbar.Action>
 
@@ -74,19 +76,21 @@ export default class TrashNotes extends Component {
                 
             <View style = { styles.cardView} >       
                 {
-                    this.state.notes != null &&
-                    this.state.gridNotes == false || this.state.gridNotes == true &&
+
+                    this.state.data.length !== 0 &&
+                    
                     <FlatList
                         numColumns = { 2 }
                         data = { this.state.data }
                         renderItem = {({ item })=> 
+
                             <NoteCard 
                                 noteObj = { item }
                                 Title = { item.title }
                                 Data = { item.note }
                                 GridStatus = { this.state.gridNotes }
                                 navigateToCreateNotes = { this.navigateToCreateNotes }
-                            /> 
+                        /> 
                         }
                     />
                         

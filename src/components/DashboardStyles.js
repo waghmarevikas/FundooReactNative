@@ -13,47 +13,59 @@ export default styles = StyleSheet.create({
         // width : 370
     },
     appbarStyle : {
-            position: 'absolute',
-            left: 0,
-            right: 0,
+            position : 'absolute',
+            // left : 0,
+            // right : 0,
             // bottom: -610,
             // top : 1,
-            marginTop : '1%',
+            // marginTop : '1%',
             backgroundColor : 'black',
             borderRadius : null,
             borderBottomWidth : null,
+        display : 'flex',
+        flexDirection : 'row',
+        bottom:0,
+        height : 'auto',
+        width:'100%',
+        // position:'absolute',
+        // justifyContent : "space-between",
+        // marginLeft : '2%',
+        // marginRight : '10%',
+
     },
     fabStyles : {
         position : 'absolute',
-        // margin: -80,
-        // right: 100,
-        marginTop : '-6%',
         marginLeft : 280,
         backgroundColor : '#d3d3d3',
-        // bottom: 10,
+        bottom: 30,
     },
     overlayView : {
         display : 'flex',
-        flexDirection : 'row',
-        // backgroundColor : 'red',
+        flexDirection : 'column',
         height : '30%',
+        // backgroundColor : '#696969',
+    },
+    avtarView : {
+        display : 'flex',
+        // marginLeft : '5%',
+        alignItems : 'center'
     },
     overlayTitle : {
         display : 'flex',
         flexDirection : 'row',
-        // backgroundColor : 'blue',
-        marginLeft : '7%',
+        marginLeft : '35%',
+        // justifyContent : 'space-around',
         width : '90%',
         height : '50%',
-        // fontSize : '20%'
-        marginTop : '-2%',
+        marginTop : '3%',
+
     },
     overlaySubTitle : {
         display : 'flex',
         // backgroundColor : 'yellow',
         width : '90%',
         height : '30%',
-        marginLeft : '10%',
+        marginLeft : '40%',
         marginTop : '1%'
     },
 
@@ -71,7 +83,7 @@ export default styles = StyleSheet.create({
         height : 'auto',
         // width : '50%',
         alignItems : 'center',
-        marginTop : '20%',
+        marginTop : '30%',
     },
     cardView : {
         display : 'flex',
@@ -93,13 +105,16 @@ export default styles = StyleSheet.create({
     },
     loaderView : {
         display : 'flex',
-        height : '83%',
-        width : '96%',
+        height : '100%',
+        width : '100%',
+        // flex : 1,
         justifyContent:"center",
-        alignItems:'center'
+        alignItems:'center',
+        // backgroundColor : '#9932cc',
     },
     topbarView : {
         display : 'flex',
         flexDirection : 'column',
-    }
+    },
+   
 })

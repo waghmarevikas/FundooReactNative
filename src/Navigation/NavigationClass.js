@@ -16,7 +16,7 @@ const NavigationStack = createStackNavigator({
     CreateNotes : { screen : CreateNotes , navigationOptions : {header : null}},
     Dashboard : { screen : AppDrawerNavigation , navigationOptions : { header : null }},
 },{
-    initialRouteName : 'LoginPage'
+    initialRouteName : 'Dashboard'
 })
 
 const AppNavigation = createAppContainer(NavigationStack)

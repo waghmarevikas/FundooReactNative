@@ -8,7 +8,7 @@ export default styles = StyleSheet.create({
     },
     iconView : {
         display : 'flex',
-        height : '6%',
+        // height : '6%',
         flexDirection : 'row',
         marginTop : '3%',
         marginLeft : '3%',
@@ -18,8 +18,8 @@ export default styles = StyleSheet.create({
     bottumIconView : {
         display : 'flex',
         flexDirection : 'row',
-        bottom:10,
-        height : '6%',
+        bottom:0,
+        height : 'auto',
         width:'98%',
         position:'absolute',
         justifyContent : "space-between",
@@ -75,5 +75,36 @@ export default styles = StyleSheet.create({
         marginLeft : '3%',
         marginRight : '2%',
         height : '20%'
+    },
+    dateView : {
+        display : 'flex',
+        marginTop : '5%',
+        width : '100%',
+        height : '20%',
+        // backgroundColor : 'red',
+        flexDirection : 'row',
+        justifyContent : 'space-around', 
+        // marginBottom : '10%', 
+    },
+    timeView : { 
+        display : 'flex',
+        flexDirection : 'row',
+        width : '100%',
+        // backgroundColor : 'yellow',
+        justifyContent : 'space-around',
+        marginTop : '10%',
+        height : '13%'
+    },
+    saveDate : {
+        display : 'flex',
+        flexDirection : 'row',
+        justifyContent : 'space-between',
+        marginTop : '13%',
+        marginBottom : '-15%',
+    },
+    chipView : { 
+        display : 'flex',
+        flexDirection : 'row',
+        // backgroundColor : 'red',
     },
 })

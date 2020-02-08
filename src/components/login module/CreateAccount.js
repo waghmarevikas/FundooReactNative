@@ -48,22 +48,22 @@ export default class CreateAccount extends Component {
     handleRegistration = () => {
         if(!this.state.firstName){
             this.setState({
-                errorFirstName : 'First Name is require...'
+                errorFirstName : 'First Name is required...'
             })
         }
         if(!this.state.lastName){
             this.setState({
-                errorLastName : 'Last Name is require... '
+                errorLastName : 'Last Name is required... '
             })
         }
         if(!this.state.password){
             this.setState({
-                errorPassword : 'Password is require...'
+                errorPassword : 'Password is required...'
             })
         }
         if(!this.state.emailId){
             this.setState({
-                errorEmailId : 'EmailId is require...'
+                errorEmailId : 'EmailId is required...'
             })
         }
         if(this.state.password != this.state.confirmPassword){
@@ -75,17 +75,18 @@ export default class CreateAccount extends Component {
             var obj = {
                 firstName : this.state.firstName,
                 lastName : this.state.lastName,
+                emailId : this.state.emailId
             }
             createUser(this.state.emailId, this.state.password, obj, (responce) =>{
-                // alert(responce)
-            });
+                alert(responce)
+            },()=>{ 
             this.setState({
                 firstName : '',
                 lastName : '',
                 emailId : '',
                 password : '',
                 confirmPassword : '',
-            })
+            })});
         }
     }
 

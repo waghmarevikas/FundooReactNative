@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import { View, Text, ScrollView, AsyncStorage, FlatList } from 'react-native';
 import styles from './DashboardStyles';
 import { Badge, Appbar, BottomNavigation, Drawer, FAB, Card } from 'react-native-paper';
-import { SearchBar, Avatar, Overlay, Button } from 'react-native-elements';
+import { SearchBar, Avatar, Overlay, Button, } from 'react-native-elements';
 import { Spinner } from 'native-base';
+import { Chip } from 'material-bread';
 import NoteCard from '../../src/components/AllNotes/NotesAddInCard';
 import { getNotes } from './FirebaseServices';
 import TopAppbar from '../../src/components/login module/TopAppbar';
+import ProfilePic from '../components/AllNotes/ProfilePic';
 
 const grid = require('../../src/Asset/grid.png')
 const accountIcon = require('../../src/Asset/account.png')
@@ -16,7 +18,6 @@ class Dashboard extends Component {
     constructor(props) {
         super(props);
         this.fetchTitle = this.props.navigation.getParam('title',null)
-        console.log('fetchhhh.....',this.fetchTitle);
         this.state = {
             searchText: '',
             list: true,
@@ -26,19 +27,20 @@ class Dashboard extends Component {
             reminders: false,
             signIn: false,
             notes: null,
-            data: [],
+            pinData: [],
+            unpinData:[],
             loader: true,
             ArchiveTouch : false,
             appbarTitle : this.fetchTitle,
+
         };
     }
-
-    handleLoginPage = () => {
+    
+    logout = () => {
         this.setState({
             isVisible: false,
             signIn: true,
         })
-        console.log(" Enter Login Page ");
         AsyncStorage.setItem('uid', "null")
         this.props.navigation.navigate('LoginPage');
     }
@@ -46,41 +48,50 @@ class Dashboard extends Component {
     navigateToCreateNotes = (noteObj) => {
         this.props.navigation.navigate('CreateNotes', { 'noteObj': noteObj })
     }
-
-    handleGridNotes = () => {
+    
+    togleGridNotes = () => {
         this.setState({
             gridNotes :! this.state.gridNotes
         })
     }
-
-    handleIsVisibility = () => {
+    
+    avtarVisibility = () => {
         this.setState({ isVisible : !this.state.isVisible })
     }
 
     drawerOpen = () => {
         this.props.navigation.openDrawer()
     }
+
     componentDidMount = () => {
         getNotes((notes) => {
-            this.setState({
-                notes: notes,
-            })
-            var data = [];
-            Object.keys(notes).map((key, index) => {
-                notes[key].noteId = key,
-                    data.push(notes[key])
-            })
-            this.setState({
-                data: data,
-                loader: false
-            }, () => {
-                console.log("array data :", this.state.data);
-            })
+            var pinData = [],unpinData=[];
+            if(notes !== null){ 
+                Object.keys(notes).map((key, index) => {
+                    notes[key].noteId = key;
+                    if(notes[key].pin === false && 
+                        notes[key].date !== undefined && notes[key].time !== undefined &&
+                        notes[key].trash === false)
+                    {
+                        unpinData.push(notes[key])
+                    }
+                    if(notes[key].pin === true && notes[key].trash === false)
+                    {
+                        pinData.push(notes[key])
+                    }
+                })
+                this.setState({
+                    pinData: pinData,
+                    unpinData:unpinData,
+                    loader: false
+                })  
+            }
         })
 
     }
 
     render() {
+        console.log( " get user note : ",this.state.notes);
         return (
 
             <View style = { styles.mainView }>
@@ -90,11 +101,11 @@ class Dashboard extends Component {
                     gridNotes = { this.state.gridNotes }
                     isVisible = { this.state.isVisible }
                     drawerOpen = { this.drawerOpen }
-                    togglegridNotes = { this.handleGridNotes }
-                    toggleisVisible = { this.handleIsVisibility }
+                    togglegridNotes = { this.togleGridNotes }
+                    toggleisVisible = { this.avtarVisibility }
                 />
 
-                <View style={{height: '83%'}} >
+                <View style = {{height: '83%'}} >
                     <ScrollView>
                         {
                             this.state.loader == true ?
@@ -102,11 +113,16 @@ class Dashboard extends Component {
                                     <Spinner />
                                 </View>
                                 :
-                                this.state.notes != null &&
+                                this.state.pinData != null &&
                                 this.state.gridNotes == false &&
                                 <FlatList
+                                    ListHeaderComponent = {
+                                        <Text style = {{ fontSize : 20, fontStyle : 'italic'}} > 
+                                            Pin 
+                                        </Text>
+                                    }
                                     numColumns = {2}
-                                    data = {this.state.data}
+                                    data = {this.state.pinData}
                                     renderItem = {({ item }) =>
                                         <NoteCard
                                             noteObj = {item}
@@ -114,6 +130,7 @@ class Dashboard extends Component {
                                             Data = { item.note }
                                             GridStatus = {this.state.gridNotes}
                                             navigateToCreateNotes = {this.navigateToCreateNotes}
+                                            Date = { item.date }
                                         />
                                     }
                                 />
@@ -122,10 +139,15 @@ class Dashboard extends Component {
 
                         {
 
-                            this.state.notes != null &&
+                            this.state.pinData != null &&
                             this.state.gridNotes == true &&
                             <FlatList
-                                data = { this.state.data }
+                                ListHeaderComponent = { 
+                                    <Text style = {{ fontSize : 20, fontStyle : 'italic'}}> 
+                                        Pin 
+                                    </Text>
+                                }
+                                data = { this.state.pinData }
                                 renderItem = {({ item }) =>
                                     <NoteCard
                                         Title = {item.title}
@@ -133,6 +155,60 @@ class Dashboard extends Component {
                                         GridStatus = {this.state.gridNotes}
                                         navigateToCreateNotes = {this.navigateToCreateNotes}
                                         noteObj = {item}
+                                        Date = { item.date }
+                                    />
+                                }
+                            />
+
+                        }
+                        {
+                            this.state.loader == true ?
+                                <View style = { styles.loaderView }>
+                                    <Spinner />
+                                </View>
+                                :
+                                this.state.unpinData != null &&
+                                this.state.gridNotes == false &&
+                                <FlatList
+                                    ListHeaderComponent = { 
+                                        <Text style = {{ fontSize : 20, fontStyle : 'italic'}} > 
+                                            Other 
+                                        </Text>
+                                    }
+                                    numColumns = {2}
+                                    data = {this.state.unpinData}
+                                    renderItem = {({ item }) =>
+                                        <NoteCard
+                                            noteObj = {item}
+                                            Title = { item.title }
+                                            Data = { item.note }
+                                            GridStatus = {this.state.gridNotes}
+                                            navigateToCreateNotes = {this.navigateToCreateNotes}
+                                            Date = { item.date }
+                                        />
+                                    }
+                                />
+
+                        }
+
+                        {
+
+                            this.state.unpinData != null &&
+                            this.state.gridNotes == true &&
+                            <FlatList
+                                ListHeaderComponent = { 
+                                    <Text style = {{ fontSize : 20, fontStyle : 'italic'}} > 
+                                        other
+                                    </Text>}
+                                data = { this.state.unpinData }
+                                renderItem = {({ item }) =>
+                                    <NoteCard
+                                        Title = {item.title}
+                                        Data = {item.note}
+                                        GridStatus = {this.state.gridNotes}
+                                        navigateToCreateNotes = {this.navigateToCreateNotes}
+                                        noteObj = {item}
+                                        Date = { item.date }
                                     />
                                 }
                             />
@@ -141,7 +217,7 @@ class Dashboard extends Component {
                     </ScrollView>
                 </View>
 
-                <View>
+                
                     <Appbar style = {styles.appbarStyle} >
 
                         <Appbar.Action
@@ -174,16 +250,15 @@ class Dashboard extends Component {
                         style = {styles.fabStyles}
                         icon = "plus"
                         onPress = {() => {
-                            console.log("Fab pressed...");
                             this.props.navigation.navigate('CreateNotes')
                         }}
-                    >
+                        >
                     </FAB>
-                </View>
+                
                 <Overlay
                     isVisible = {this.state.isVisible}
                     windowBackgroundColor = " rgba(255, 255, 255, .5) "
-                    overlayBackgroundColor = "white"
+                    overlayBackgroundColor = "#696969"
                     width = '80%'
                     height = '30%'
                     overlayStyle = {{ borderRadius: 15, }}
@@ -195,26 +270,35 @@ class Dashboard extends Component {
                 >
                     <View style = {styles.overlayView}>
 
-                        <Avatar
-                            size = {'medium'}
-                            rounded
-                            title = 'V'
-                            activeOpacity = {0.7}
-                        >
-                        </Avatar>
+                        <View style = { styles.avtarView} >
+                            {/* <Avatar
+                                size = {'medium'}
+                                rounded
+                                title = 'V'
+                                titleStyle = {{ color: 'black', fontSize : 35}}
+                                // avatarStyle = {{ backgroundColor : 'blue' }}
+                                activeOpacity = {0.7}
+                                >
+                            </Avatar> */}
+                            <ProfilePic/>
+                        </View>
+
+                        
 
                         <View style = {styles.overlayText}>
+
                             <View style = {styles.overlayTitle}>
                                 <Text style = {{ fontSize: 20, }}>
                                     vikas waghmare
-                            </Text>
+                                </Text>
                             </View>
 
                             <View style = {styles.overlaySubTitle}>
                                 <Text style = {{ fontSize: 15, }}>
                                     vikas@gmail.com
-                            </Text>
+                                </Text>
                             </View>
+
                         </View>
 
                     </View>
@@ -222,8 +306,8 @@ class Dashboard extends Component {
                     <View style = {styles.overlayButton}>
                         <Button
                             title = '  SIGN OUT  '
-                            type = { this.state.signIn ? 'solid' : 'outline' }
-                            onPress = { this.handleLoginPage }
+                            type = { this.state.signIn ? 'solid' : 'solid' }
+                            onPress = { this.logout } 
                         >
                         </Button>
                     </View>

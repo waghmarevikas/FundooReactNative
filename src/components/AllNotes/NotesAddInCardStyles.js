@@ -11,11 +11,11 @@ export default styles = StyleSheet.create({
     },
     gridTrueView : {
         display : 'flex',
-        backgroundColor : 'blue',
+        // backgroundColor : 'blue',
         width : '96%',
         marginTop : '2%',
         marginLeft : '2%',
-        // height : 'auto',
+        height : 'auto',
          
 
     },
