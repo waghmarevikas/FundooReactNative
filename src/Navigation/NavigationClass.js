@@ -8,13 +8,16 @@ import { createStackNavigator } from 'react-navigation-stack';
 import Dashboard from '../components/Dashboard';
 import AppDrawerNavigation from './DrawerNavigation';
 import AccountInfo from '../components/login module/AccountInfo';
+import AddLabels from '../components/AllNotes/AddLabels';
+import MenuList from '../components/AllNotes/MenuList';
 
 const NavigationStack = createStackNavigator({
-    LoginPage : {screen : LoginPage ,navigationOptions : {header : null}},
-    CreateAccount : {screen : CreateAccount ,navigationOptions : {header : null}},
-    ForgotPassword : {screen : ForgotPassword ,navigationOptions : {header : null}},
-    CreateNotes : { screen : CreateNotes , navigationOptions : {header : null}},
+    LoginPage : {screen : LoginPage ,navigationOptions : { header : null}},
+    CreateAccount : {screen : CreateAccount ,navigationOptions : { header : null}},
+    ForgotPassword : {screen : ForgotPassword ,navigationOptions : { header : null}},
+    CreateNotes : { screen : CreateNotes , navigationOptions : { header : null}},
     Dashboard : { screen : AppDrawerNavigation , navigationOptions : { header : null }},
+    AddLabels : { screen : AddLabels, navigationOptions : { header : null}},
 },{
     initialRouteName : 'Dashboard'
 })

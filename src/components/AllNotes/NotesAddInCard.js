@@ -19,7 +19,6 @@ class NotesAddInCard extends Component {
     }
      
   render() { 
-    console.log(" date in Note card Dashboard",this.props.Date);
     return (
       <View style = { this.props.GridStatus ? styles.gridTrueView :  styles.mainView }>
         <Card 
@@ -32,7 +31,7 @@ class NotesAddInCard extends Component {
                     titleStyle = {{ fontSize : 15}}
                 />
                 <Card.Content>
-                    <Text>{this.props.Data}</Text>
+                    <Text>{ this.props.Data }</Text>
                 </Card.Content>
                 <Card.Content>
                   <Chip

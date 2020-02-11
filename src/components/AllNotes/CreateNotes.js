@@ -18,7 +18,10 @@ var objNotesModel = new util.UserNotesModel();
 class CreateNotes extends Component {
     constructor(props){
         super(props);
-        this.fetchNote = this.props.navigation.getParam('noteObj',null)  
+        this.fetchNote = this.props.navigation.getParam('noteObj',null) 
+        this.fetchLabel = this.props.navigation.getParam('labelIs',null) 
+        console.log( " lables ",this.fetchLabel );
+    
         this.state = {
             title : this.fetchNote === null ? '': this.fetchNote.title,
             note : this.fetchNote === null ? '': this.fetchNote.note,
@@ -41,6 +44,7 @@ class CreateNotes extends Component {
             isTimePickerVisible : false,
             chipVisible : false,
             reminderDate : false,
+            checkLabelVisible : false,
         }
 
         this.moreRef = React.createRef();
@@ -208,6 +212,13 @@ class CreateNotes extends Component {
             ()=>{console.log("Color is",takeColor)})
     }
 
+    navigateForaddLabel = () => {
+        this.setState({ isMenu : false},()=>{
+            console.log(" is me",this.state.isMenu);
+            this.props.navigation.navigate('AddLabels');
+        })
+      
+    }
 
   render() {
     return (
@@ -269,7 +280,9 @@ class CreateNotes extends Component {
             </View>
 
           </View>
+
         {/* <View style = {{ backgroundColor : 'color'}}>  </View> */}
+
           <View style = { styles.textInputView }>
 
                 <TextInput
@@ -299,8 +312,8 @@ class CreateNotes extends Component {
                         this.setState({ note : text })
                     }}
                     >
-
                 </TextInput>
+
           </View>
       
 
@@ -312,10 +325,17 @@ class CreateNotes extends Component {
                 />
           </View>
 
+          <View style = { styles.checkLabelChip }>
+              <Chip
+                visible = { this.state.checkLabelVisible }
+                leftIcon = { <Icon name = 'label'/> }
+              />
+          </View>
+
                 <MenuList
-                        visible = { this.state.isMenu}
+                        visible = { this.state.isMenu }
                         closeMenu = { ()=> this.setState({ isMenu : false}) }
-                        openMenu = { ()=> this.setState({ isMenu : true}) }
+                        openMenu = { ()=> this.setState({ isMenu : !this.state.isMenu}) }
                         moreRef = { this.moreRef }
                         handleTrashNoteSubmit = { ()=>{
                                     if( this.fetchNote === null ){
@@ -328,7 +348,8 @@ class CreateNotes extends Component {
                                             ()=>{this.updateTrashNoteSubmit()})   
                                     }
                         }}
-                        handleColor = { this.handleSetColor }  
+                        handleColor = { this.handleSetColor }
+                        navigateForaddLabel = { this.navigateForaddLabel }  
                  />
 
              <Overlay

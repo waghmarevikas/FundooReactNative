@@ -133,6 +133,17 @@ export  function createUser(email,password,obj,callback) {
     })
   }
   
+  export async function updateLabels( label , id) {
+    const uid = await AsyncStorage.getItem('uid');
+    var obj = {};
+    obj[id] = label
+    firebase.database().ref('/users/'+uid+'/labels/').update(obj);
+  }
+
+  export async function removeLabels(labelId){
+    const uid = await AsyncStorage.getItem('uid');
+    firebase.database().ref('/users/'+uid+'/labels/'+labelId).remove()
+  }
   
 
 //  export function updateNote(key , obj) {

@@ -122,14 +122,14 @@ class Dashboard extends Component {
                                         </Text>
                                     }
                                     numColumns = {2}
-                                    data = {this.state.pinData}
+                                    data = { this.state.pinData }
                                     renderItem = {({ item }) =>
                                         <NoteCard
-                                            noteObj = {item}
+                                            noteObj = { item }
                                             Title = { item.title }
                                             Data = { item.note }
-                                            GridStatus = {this.state.gridNotes}
-                                            navigateToCreateNotes = {this.navigateToCreateNotes}
+                                            GridStatus = { this.state.gridNotes }
+                                            navigateToCreateNotes = { this.navigateToCreateNotes }
                                             Date = { item.date }
                                         />
                                     }

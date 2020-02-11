@@ -3,7 +3,7 @@ import { View, Text, TextInput, FlatList, ScrollView } from 'react-native';
 import { Icon, Divider } from 'react-native-elements';
 import styles from './EditeLabelsStyles';
 import Labels from './Labels';
-import { createLabels, getLabels } from '../FirebaseServices';
+import { createLabels, getLabels, removeLabels } from '../FirebaseServices';
 export default class EditLabels extends Component {
   constructor (props){
     super(props);
@@ -26,18 +26,22 @@ export default class EditLabels extends Component {
     this.props.navigation.navigate('Notes');
   }
 
+  
+
   componentDidMount = () => {
     getLabels((labels) => {
       let labelsArray = []
       Object.keys(labels).map((key,index)=>{
         var obj = {};
         obj.labelId = key;
+        this.setState({ labelId : obj.labelId })
         obj.labelName = labels[key];
         labelsArray.push(obj)
       })
       this.setState({labelArray:labelsArray.reverse()})
     })
   }
+
   render() {
     return (
       <View style = { styles.mainView }>
@@ -64,7 +68,7 @@ export default class EditLabels extends Component {
             {
               this.state.createLable === false ? 
               null :
-              <Divider style = {{ backgroundColor : 'red', marginTop : '10%', }} />
+             (  <Divider style = {{ backgroundColor : 'red', marginTop : '10%', }} /> )
             }
 
             <View style = { styles.plusIcon }>
@@ -73,11 +77,11 @@ export default class EditLabels extends Component {
                 type = 'material-community'
                 size = { 35 }
                 iconStyle = { this.state.createLable === false ? 
-                          {marginTop : 0} : {marginTop : '25%'}
-                        }
+                                {marginTop : 0} : {marginTop : '25%'}
+                            }
                 onPress = { ()=>{ 
-                  this.setState({ createLable : !this.state.createLable},
-                    )}}
+                            this.setState({ createLable : !this.state.createLable},
+                          )}}
                 />
             </View>
 
@@ -143,6 +147,7 @@ export default class EditLabels extends Component {
                           <Labels
                             labelObj = { item }
                             labelName = { item.labelName }
+                            labelId = { item.labelId }
                           />
                         }
                     />

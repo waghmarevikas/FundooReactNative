@@ -105,6 +105,10 @@ export default styles = StyleSheet.create({
     chipView : { 
         display : 'flex',
         flexDirection : 'row',
-        // backgroundColor : 'red',
+    },
+    checkLabelChip : {
+        display : 'flex',
+        flexDirection : 'row',
+        backgroundColor : 'red',
     },
 })

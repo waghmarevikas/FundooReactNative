@@ -14,9 +14,7 @@ constructor(props) {
 };
 
 
-  openMenu = () => this.setState({ visible: true },()=>{
-      console.log("styatye:",this.state);  
-  });
+  openMenu = () => this.setState({ visible: true });
 
   handleColor = () => {
     this.setState({
@@ -24,12 +22,15 @@ constructor(props) {
     })
   }
 
-
   closeMenu = () =>{
-    console.log("sdtate:",this.state); 
     this.setState({ visible : false },()=>{ 
     this.props.handleTrashNoteSubmit})
   };
+
+  AddLabelOnNotes = () =>{
+    this.setState({ visible : false })
+    this.props.navigation.navigate('AddLabels');
+  } 
 
   render() {
     return (
@@ -80,10 +81,12 @@ constructor(props) {
               onPress = { this.closeMenu } 
               title = 'Collaborator' icon = 'account-plus-outline' 
             />
+
             <Menu.Item 
-              onPress = { this.closeMenu } 
               title = 'Labels' icon = 'label-outline' 
+              onPress = {()=>{ this.setState({visible : false},this.props.navigateForaddLabel )}   }
             />
+
             <ColorPalette
               title = { '' }
               onChange = { color => this.props.handleColor(color)}
