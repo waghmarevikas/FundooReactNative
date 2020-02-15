@@ -15,19 +15,22 @@ export default class AddLabels extends Component {
         labelName : '',
         labelId : '',
         selectedLabels : [],
+        addSelected : [],
     };
   }
 
 backCreateNotes = (labelId) => {
+
     this.props.navigation.navigate('CreateNotes',{ 'labelId' : labelId });
 }
 
-selectLabels = (markLable) =>{
-    let markLabels = []
-    markLabels.push(markLable)
-    this.setState({ selectedLabels : markLabels }) 
-    console.log("Mark labels ",markLable);
+selectLabels = (labelId) =>{
+  this.state.selectedLabels.push(labelId)
+    console.log("Mark labels ",labelId);
     console.log(" selected labels ",this.state.selectedLabels );
+    this.setState({
+      // addSelected : this.state.selectedLabels.filter(sel)
+    })
 }
 
 componentDidMount = () => {

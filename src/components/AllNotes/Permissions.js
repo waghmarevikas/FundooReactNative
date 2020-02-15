@@ -14,7 +14,8 @@ export async function requestCameraPermission() {
         );
         if (grantedCamera === PermissionsAndroid.RESULTS.GRANTED) {
             console.log('You can use the camera');
-        } else {
+        } 
+        else {
             console.log('Camera permission denied');
         }
 
@@ -38,7 +39,8 @@ export async function requestExternalStoragePermission() {
         );
         if (grantedReadExternal === PermissionsAndroid.RESULTS.GRANTED) {
             console.log('You can Read external storage');
-        } else {
+        } 
+        else {
             console.log('read external permission denied');
         }
 
@@ -54,7 +56,8 @@ export async function requestExternalStoragePermission() {
         );
         if (grantedWriteExternal === PermissionsAndroid.RESULTS.GRANTED) {
             console.log('You can write external storage');
-        } else {
+        } 
+        else {
             console.log('write external permission denied');
         }
 

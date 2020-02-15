@@ -120,8 +120,9 @@ export  function createUser(email,password,obj,callback) {
 
   export async function createLabels(label){
     const uid = await AsyncStorage.getItem('uid');
-    if(label !== '' && label !== undefined){ 
-    firebase.database().ref('/users/'+uid+'/labels/').push(label)
+    if(label !== '' && label !== undefined)
+    { 
+      firebase.database().ref('/users/'+uid+'/labels/').push(label)
     }
   }
 

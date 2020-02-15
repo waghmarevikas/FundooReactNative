@@ -38,6 +38,12 @@ target 'fundookeep' do
 
   pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
 
+  pod 'RNSimpleNativeGeofencing', :path => '../node_modules/react-native-simple-native-geofencing'
+
+  pod 'RNReactNativeGeoFence', :path => '../node_modules/react-native-geo-fence'
+
+  pod 'react-native-maps', :path => '../node_modules/react-native-maps'
+
   target 'fundookeepTests' do
     inherit! :search_paths
     # Pods for testing

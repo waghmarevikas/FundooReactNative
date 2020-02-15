@@ -44,7 +44,6 @@ class Reminders extends Component {
                   notes : notes,
               })
               var data = [];
-              console.log( " notes.....................",this.state.notes);
               Object.keys(notes).map((key,index)=>{
                 notes[key].noteId = key,
                 data.push(notes[key])

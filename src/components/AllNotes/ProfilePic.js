@@ -72,9 +72,14 @@ export default class ProfilePic extends Component {
         return colorArray[random];
     }
 
+    logOutUser = () =>{
+        this.setState ({ visible : false},()=>{
+            this.props.logOut
+        })
+
+    }
     componentDidMount = async () => {
         getUserDetails(async (snapshot) => {
-            console.log( " Profile Image : " ,snapshot);
             this.setState({
                 userObj : snapshot,
                 firstName : snapshot.firstName,
@@ -99,18 +104,20 @@ export default class ProfilePic extends Component {
                 onTouchOutside = {() => this.setState({ visible: false })}
                 style = {
                     {
-                    width: 400,
-                    padding: 10,
+                        width: 400,
+                        padding: 10,
                     }
                 }
                 >
 
                 <Avatar
-                    type =  {   this.state.userObj === null || 
+                    type =  {   
+                                this.state.userObj === null || 
                                 this.state.userObj.ProfileImage === undefined ? 
                                 "text" : 'image'
                             }
-                    content = { this.state.userObj !== null 
+                    content = { 
+                                this.state.userObj !== null 
                                 // && (this.state.userObj.firstName).charAt(0)
                               }
                     contentColor = { 'white' }
@@ -130,7 +137,8 @@ export default class ProfilePic extends Component {
                     this.state.userObj !== null &&
                     <View style = {{ alignItems : 'center' }}>
                     <Title>
-                        {   this.state.userObj.lastNamae !== undefined ?
+                        {   
+                            this.state.userObj.lastNamae !== undefined ?
                             this.state.userObj.firstName + ' ' + 
                             this.state.userObj.lastNamae : 
                             this.state.userObj.firstName 
@@ -138,7 +146,9 @@ export default class ProfilePic extends Component {
                     </Title>
 
                     <Paragraph>
-                        { this.state.userObj.emailId }
+                        { 
+                            this.state.userObj.emailId 
+                        }
                     </Paragraph>
 
                     </View>
@@ -158,10 +168,7 @@ export default class ProfilePic extends Component {
                     />
                     <Button
                         text = {'Sign out'}
-                        onPress = { () => onSignOut().then(() =>
-                            this.setState({ visible: false }),
-                            this.props.navigation.navigate('LoginPage'))
-                        }
+                        onPress = { this.logOutUser }
                     />
           </View>
         </Dialog>

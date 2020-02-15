@@ -40,9 +40,10 @@ class Dashboard extends Component {
         this.setState({
             isVisible: false,
             signIn: true,
-        })
+        },()=>{ 
         AsyncStorage.setItem('uid', "null")
-        this.props.navigation.navigate('LoginPage');
+        this.props.navigation.navigate('LoginPage')
+        console.log(" Log out ")})  
     }
 
     navigateToCreateNotes = (noteObj) => {
@@ -91,7 +92,6 @@ class Dashboard extends Component {
     }
 
     render() {
-        console.log( " get user note : ",this.state.notes);
         return (
 
             <View style = { styles.mainView }>
@@ -280,7 +280,9 @@ class Dashboard extends Component {
                                 activeOpacity = {0.7}
                                 >
                             </Avatar> */}
-                            <ProfilePic/>
+                            <ProfilePic
+                                logOut = { this.logout }
+                            />
                         </View>
 
                         

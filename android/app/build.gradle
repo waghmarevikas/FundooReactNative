@@ -179,6 +179,10 @@ android {
 }
 
 dependencies {
+//    implementation project(':react-native-maps')
+//    implementation project(':react-native-geo-fence')
+//    implementation project(':react-native-geo-fencing')
+//    implementation project(':react-native-simple-native-geofencing')
     implementation project(':react-native-image-picker')
     implementation project(':react-native-vector-icons')
     implementation fileTree(dir: "libs", include: ["*.jar"])

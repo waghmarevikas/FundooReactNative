@@ -12,6 +12,7 @@ import SettingMenu from '../components/login module/SettingMenu';
 import HelpAndFeedback from '../components/login module/Help&feedbach'
 import TrashNotes from '../components/AllNotes/TrashNotes';
 import LabledNotes from '../components/AllNotes/EditLabels';
+import NoteChart from '../components/AllNotes/NoteChart';
 
 const reminderImage = require('../Asset/reminder.png')
 const notesImage = require('../Asset/notes.png')
@@ -19,7 +20,8 @@ const archiveImage = require('../Asset/archive.png');
 const trashImage = require('../Asset/trash.png')
 const settingImage = require('../Asset/setting.png');
 const helpImage = require('../Asset/help.png');
-const addLable = require('../Asset/plusadd.png')
+const addLable = require('../Asset/plusadd.png');
+const chart = require('../Asset/chart.png')
 const DrawerNavigation = createDrawerNavigator({
 
 
@@ -50,7 +52,11 @@ const DrawerNavigation = createDrawerNavigator({
 
     HelpAndFeedback: { screen : HelpAndFeedback, navigationOptions : 
         { drawerIcon: <Image source = { helpImage } 
-        style ={{ width : 20 , height : 20}}></Image>}}
+        style ={{ width : 20 , height : 20}}></Image>}},
+
+    NoteChart : { screen : NoteChart, navigationOptions : 
+        { drawerIcon: <Image source = { chart } 
+        style ={{ width : 20 , height : 20}}></Image>} }
       
 },{
     initialRouteName:'Notes'
