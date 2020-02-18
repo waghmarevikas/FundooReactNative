@@ -18,6 +18,7 @@ export default class NoteChart extends Component {
         notes : '',
         data : '',
         lineData : '',
+        barData : '',
     };
   }
 
@@ -149,11 +150,12 @@ export default class NoteChart extends Component {
    this.state.data = data 
 
    const chartConfig = {
-      backgroundGradientFrom : "#1E2923",
+      backgroundGradientFrom : "#000000",
       backgroundGradientFromOpacity : 0,
-      backgroundGradientTo : "#08130D",
+      backgroundGradientTo : "#000000",
       backgroundGradientToOpacity : 0.5,
       color : (opacity = 1) => `rgba(26, 255, 146, ${ opacity })`,
+      labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
       strokeWidth : 3, // optional, default 3
       barPercentage : 0.5
     };
@@ -172,10 +174,28 @@ export default class NoteChart extends Component {
       ]
      }
 
-     this.state.lineData = lineData
+    this.state.lineData = lineData
+
+    const barData = {
+      datasets : [
+        {
+          data : [
+            this.state.pinNotes.length,
+            this.state.unpinNotes.length,
+            this.state.archiveNotes.length,
+            this.state.trashNotes.length,
+            this.state.reminderNotes.length,
+          ]
+        }
+      ]
+    }
+
+    this.state.barData = barData 
+
     return (
       
       <View style = { styles.mainView }>
+        <ScrollView>
           <View style ={{ marginLeft : 2, width : 50}}>
             <Icon
                   size = { 35 }
@@ -238,6 +258,20 @@ export default class NoteChart extends Component {
             />
         </View>
 
+        <Text style = {{ fontSize : 20, marginLeft : 20, }} >
+          Bar Chart of Notes
+        </Text>
+
+        <BarChart
+            // style = { graphStyle }
+            data = { barData }
+            width = { screenWidth }
+            height = { 220 }
+            yAxisLabel = "$"
+            chartConfig = { chartConfig }
+            verticalLabelRotation = { 30 }
+        />
+      </ScrollView>
       </View>
      
     );
@@ -249,7 +283,7 @@ const styles = StyleSheet.create({
     mainView : {
         display : 'flex',
         flex : 1,
-        backgroundColor : '#dcdcdc',
+        backgroundColor : 'white',
     },
     pieView : {
       marginLeft : '2',

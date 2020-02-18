@@ -18,11 +18,12 @@ class NotesAddInCard extends Component {
         }
     }
      
-  render() { 
-    return (
+  render() {
+ return (
       <View style = { this.props.GridStatus ? styles.gridTrueView :  styles.mainView }>
         <Card 
-            onPress = { ()=>{
+            style = {{ backgroundColor : this.props.color !== '' ? this.props.color : 'white' }}
+            onPress = { ()=> {
                 this.props.navigateToCreateNotes(this.props.noteObj) 
             }} 
             >

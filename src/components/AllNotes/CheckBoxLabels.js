@@ -20,7 +20,7 @@ export default class CheckBoxLabels extends Component {
             // this.state.selected.push(this.props.labelId)
             // console.log('selected ttttts',this.state.selected);
             // selected.push(this.props.labelId)
-            this.props.selectLabels(this.props.labelId)
+            this.props.selectLabels(this.props.labelId, this.props.labelName)
             
         }
         // this.setState({ selected : selected },()=> console.log('selected ....',this.state.selected)
@@ -44,13 +44,17 @@ export default class CheckBoxLabels extends Component {
         </Text>
 
         <Icon
-            name = { this.state.checkLabel === false ? 
-                'check-box-outline-blank' : 'check-box' }
+            name = {  
+                      this.state.checkLabel === false ? 
+                      'check-box-outline-blank' : 'check-box' 
+                    }
             type = 'MaterialIcons'
             size = { 30 }  
-            iconStyle = { this.state.checkLabel === false ? 
-                { marginLeft : 5, paddingBottom : 5} : 
-                { marginLeft : 5, paddingBottom : 5, color : 'blue'}} 
+            iconStyle = { 
+                            this.state.checkLabel === false ? 
+                            { marginLeft : 5, paddingBottom : 5 } : 
+                            { marginLeft : 5, paddingBottom : 5, color : 'blue'}
+                        } 
             onPress = { ()=>{ 
                 this.setState({ checkLabel :! this.state.checkLabel}, this.addLabelsOnNote )}} 
         />

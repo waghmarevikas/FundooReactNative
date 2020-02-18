@@ -6,6 +6,9 @@ import CheckBoxLabels from './CheckBoxLabels'
 import { getLabels } from '../FirebaseServices';
 import styles from './AddLabelsStyles';
 
+var labelsObj = {}
+var totalLabels = {}
+var totalLabelId = {}
 export default class AddLabels extends Component {
   constructor(props) {
     super(props);
@@ -16,42 +19,61 @@ export default class AddLabels extends Component {
         labelId : '',
         selectedLabels : [],
         addSelected : [],
+        totalLabelId : [],
+        totalLabels : [],
     };
   }
 
-backCreateNotes = (labelId) => {
-
-    this.props.navigation.navigate('CreateNotes',{ 'labelId' : labelId });
+backCreateNotes = () => {
+  totalLabelId = this.state.totalLabelId
+  totalLabels = this.state.totalLabels
+  console.log(" lllllllll .... ",totalLabelId);
+  console.log("Name of Labels ...",totalLabels);
+  
+  this.props.navigation.navigate('CreateNotes',{ 'totalLabels' : this.state.totalLabels });
 }
 
-selectLabels = (labelId) =>{
-  this.state.selectedLabels.push(labelId)
+selectLabels = (labelId ,labelName) =>{
+  this.state.selectedLabels.push(labelId, labelName) 
+    this.state.totalLabelId.push(labelId)
+    this.state.totalLabels.push(labelName)
     console.log("Mark labels ",labelId);
-    console.log(" selected labels ",this.state.selectedLabels );
-    this.setState({
-      // addSelected : this.state.selectedLabels.filter(sel)
-    })
+    this.props.labelsFun
+    console.log(" selected labels ..... ",this.state.selectedLabels );
+    // this.props.labelArray(labelId, labelName)
+    labelsObj = this.state.selectedLabels
+    console.log(" sessssssss",labelsObj);
+    
 }
 
 componentDidMount = () => {
+  var labelsArray = []
     getLabels((labels) => {
-      let labelsArray = []
+      
       Object.keys(labels).map((key,index)=>{
+
         var obj = {};
         obj.labelId = key;
-        this.setState({ labelId : obj.labelId },
-            console.log('labels id...',this.state.labelId)
-            )
+        // console.log("iiiiiiiiiiiiiiiiiiiiiiidddddddddddd",obj.labelId);
+        this.setState({ labelId : obj.labelId },()=>{ 
+            console.log('labels id...',this.state.labelId)})
+
         obj.labelName = labels[key];
+
+        this.setState({ labelName : obj.labelName},()=>{ 
+          console.log(" labels name : ",this.state.labelName)})
+
         labelsArray.push(obj)
+
       })
-      this.setState({ labelArray : labelsArray.reverse() },
-      console.log("ASrrraa"),
-      )
+      this.setState({ labelArray : labelsArray.reverse() })
     })
+
+    // labelsObj = labelsArray
 }
 
   render() {
+    // console.log(" oooooobbbbbbbbbjjjjjjj",labelsObj);
     return (
       <View style = { styles.mainView }>
             <View style = { styles.backArrow }>
@@ -88,6 +110,7 @@ componentDidMount = () => {
                     />
               </View>
           </ScrollView>
+
       </View>
     );
   }

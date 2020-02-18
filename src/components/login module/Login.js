@@ -5,7 +5,8 @@ import {
     View,Image,
     TouchableOpacity, 
     Button,
-    ScrollView,    
+    ScrollView, 
+    CheckBox,   
 } from 'react-native';
 import { TextField } from 'material-bread';
 import ValidationComponent from 'react-native-form-validator'
@@ -125,25 +126,24 @@ export default class LoginPage extends Component {
                </View>
 
                <View style = { styles.emailPassword}>
-               <View style = { styles.email}>
-                    <OutlinedTextField
-                        label =' Email Id '
-                        error = { this.state.emailIdError }
-                        onSubmitEditing={this.onSubmit}
-                        ref={this.fieldRef}
-                        onChangeText = {(text)=>{
-                            this.setState({
-                                emailId : text
-                            },()=>{
-                                console.log(this.state.emailId); 
-                            })
-                            }} 
-                        >  
-                    </OutlinedTextField>
-                    
-               </View>
 
-                <View style = { styles.passwordView}>
+                    <View style = { styles.email}>
+                            <OutlinedTextField
+                                label =' Email Id '
+                                error = { this.state.emailIdError }
+                                onSubmitEditing={this.onSubmit}
+                                ref={this.fieldRef}
+                                onChangeText = {(text)=>{
+                                    this.setState({
+                                        emailId : text
+                                    },()=>{
+                                        console.log(this.state.emailId); 
+                                    })
+                                    }} 
+                                >  
+                            </OutlinedTextField>   
+                    </View>
+
                     <View style = {styles.password}>
                         <OutlinedTextField
                             label =' Password '
@@ -162,19 +162,21 @@ export default class LoginPage extends Component {
                         </OutlinedTextField>
                     </View>
 
-                <View style = {styles.imageView}>
-                    <TouchableOpacity onPress = {()=>this.setState({showPassword:!this.state.showPassword})} >
-                        <Image
-                            style = {{ height : 30 , width : 30 , }}
-                            source =  { this.state.showPassword ? 
-                                visibilityOnIcon : visibilityOffIcon
-                            } 
-                        />
-                </TouchableOpacity>
+                </View>
 
+                <View style = { styles.imageView }>
+                    <CheckBox 
+                        value = { this.state.showPassword } 
+                        onChange = {()=>
+                            this.setState({showPassword : !this.state.showPassword})
+                        } >
+                    </CheckBox>
+                    <Text style = {{ fontSize : 17, marginTop : 5, color : '#a9a9a9' }}>
+                        show Password
+                    </Text>
                 </View>
-                </View>
-                </View>
+
+
                 <TouchableOpacity >
                     <View style = { styles.login }>
                         <Button 

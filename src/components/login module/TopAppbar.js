@@ -34,8 +34,11 @@ export default class TopAppbar extends Component{
                 <Appbar.Content
                     title = { this.props.appbarTitle }
                     style = {{
-                        fountSize : 10,
-                        marginRight : '1%'
+                        fountSize : 8,
+                        marginRight : '1%',
+                        marginLeft : '-1%',
+                        // backgroundColor : 'red',
+                        width : 200
                     }}
                 >
                 </Appbar.Content>
@@ -61,18 +64,7 @@ export default class TopAppbar extends Component{
                 {
                    this.state.title2 == this.props.appbarTitle ? 
                     null :
-                    // <Avatar
-                    //     size = {'small'}
-                    //     rounded
-                    //     titleStyle = {{ 
-                    //         color : 'black', backgroundColor : 'white',
-                    //         fontSize : 25, fontStyle : 'bold', width : '100%'}}
-                    //     title = 'V'
-                    //     activeOpacity = {0.7}
-                    //     onPress = { this.props.toggleisVisible }
-                    //     >
-                    //  </Avatar>
-                    <ProfilePic/>
+                    <ProfilePic {...this.props}/>
                 }
                 
             </Appbar>

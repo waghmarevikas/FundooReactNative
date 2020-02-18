@@ -18,10 +18,12 @@ var objNotesModel = new util.UserNotesModel();
 class CreateNotes extends Component {
     constructor(props){
         super(props);
+        
         this.fetchNote = this.props.navigation.getParam('noteObj',null) 
-        this.fetchLabel = this.props.navigation.getParam('labelIs',null) 
-        console.log( " lables ",this.fetchLabel );
-    
+        this.fetchLabel = this.props.navigation.getParam('totalLabels',null) 
+        // console.log(" fetch notes labels ",this.fetchLabel.lenght);
+        // console.log("Name of Labels ... ",this.fetchLabel.labelName)
+     
         this.state = {
             title : this.fetchNote === null ? '': this.fetchNote.title,
             note : this.fetchNote === null ? '': this.fetchNote.note,
@@ -29,7 +31,9 @@ class CreateNotes extends Component {
             archive : this.fetchNote === null ? false : this.fetchNote.archive,
             trash : this.fetchNote === null ? false : this.fetchNote.trash,
             color : this.fetchNote === null ? '' : this.fetchNote.color,
-            label : this.fetchNote === null ? null : this.fetchNote.label,
+
+            label : this.fetchNote === null ? '' : 
+            this.fetchNote.label !== undefined ? this.fetchNote.label : '',
 
             date : this.fetchNote === null ? '' : 
             this.fetchNote.date !== undefined ? this.fetchNote.date : '',
@@ -45,6 +49,7 @@ class CreateNotes extends Component {
             chipVisible : false,
             reminderDate : false,
             checkLabelVisible : false,
+            labelArray : [],
         }
 
         this.moreRef = React.createRef();
@@ -53,7 +58,7 @@ class CreateNotes extends Component {
     handleNoteSubmit = () => {
         if(!this.state.title && !this.state.note)
         {
-            console.log("Node is empty...")
+            alert("Node is empty...")
         }
         else
         {
@@ -166,7 +171,7 @@ class CreateNotes extends Component {
         console.log("Trash notes ");
         if(!this.state.title && !this.state.note)
         {
-            alert(" Empty...")
+            alert(" Empty trash notes ... ")
         }
         else
         {
@@ -218,6 +223,23 @@ class CreateNotes extends Component {
             this.props.navigation.navigate('AddLabels');
         })
       
+    }
+
+    addLabelsOnNotes = () => { 
+        if(this.state.label !== null){
+            this.setState({ checkLabelVisible : true })
+        }
+    }
+
+    addLabelsInArray = (labelId, labelName) => {
+        this.state.labelArray.push(labelId, labelName)
+        console.log(" Labelid And Name :- ",labelId ,"  ", labelName);
+        
+    }
+
+    labelsFun = () =>{
+        console.log(" call from add labels ...");
+        
     }
 
   render() {
@@ -283,7 +305,17 @@ class CreateNotes extends Component {
 
         {/* <View style = {{ backgroundColor : 'color'}}>  </View> */}
 
-          <View style = { styles.textInputView }>
+          <View 
+                style = {{ 
+                    display : 'flex',
+                    flexDirection : 'column',
+                    backgroundColor : this.state.color,
+                    marginTop : '2%',
+                    marginLeft : '3%',
+                    marginRight : '2%',
+                    height : '20%'
+                }}
+                >
 
                 <TextInput
                     style = {{ 
@@ -326,10 +358,17 @@ class CreateNotes extends Component {
           </View>
 
           <View style = { styles.checkLabelChip }>
-              <Chip
-                visible = { this.state.checkLabelVisible }
-                leftIcon = { <Icon name = 'label'/> }
-              />
+              {
+                  this.fetchLabel === null ?
+                  false  :
+                  <Chip
+                    visible = { true }
+                    
+                    text = { this.fetchLabel[2] }
+                    leftIcon = { <Icon name = 'label'/> }
+                />
+              }
+             
           </View>
 
                 <MenuList
@@ -349,7 +388,11 @@ class CreateNotes extends Component {
                                     }
                         }}
                         handleColor = { this.handleSetColor }
-                        navigateForaddLabel = { this.navigateForaddLabel }  
+                        navigateForaddLabel = { this.navigateForaddLabel }
+                        addLabelsOnNotes = { this.addLabelsOnNotes } 
+                        labelArray = { this.addLabelsInArray } 
+                        { ...this.props }
+                        labelsFun = { this.labelsFun }
                  />
 
              <Overlay

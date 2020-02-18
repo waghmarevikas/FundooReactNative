@@ -37,6 +37,8 @@ class Dashboard extends Component {
     }
     
     logout = () => {
+        console.log(" logout in dashboard .... ");
+        
         this.setState({
             isVisible: false,
             signIn: true,
@@ -92,6 +94,7 @@ class Dashboard extends Component {
     }
 
     render() {
+
         return (
 
             <View style = { styles.mainView }>
@@ -103,6 +106,7 @@ class Dashboard extends Component {
                     drawerOpen = { this.drawerOpen }
                     togglegridNotes = { this.togleGridNotes }
                     toggleisVisible = { this.avtarVisibility }
+                    {...this.props}
                 />
 
                 <View style = {{height: '83%'}} >
@@ -128,6 +132,7 @@ class Dashboard extends Component {
                                             noteObj = { item }
                                             Title = { item.title }
                                             Data = { item.note }
+                                            color = { item.color }
                                             GridStatus = { this.state.gridNotes }
                                             navigateToCreateNotes = { this.navigateToCreateNotes }
                                             Date = { item.date }
@@ -150,8 +155,9 @@ class Dashboard extends Component {
                                 data = { this.state.pinData }
                                 renderItem = {({ item }) =>
                                     <NoteCard
-                                        Title = {item.title}
-                                        Data = {item.note}
+                                        Title = { item.title }
+                                        Data = { item.note }
+                                        color = { item.color }
                                         GridStatus = {this.state.gridNotes}
                                         navigateToCreateNotes = {this.navigateToCreateNotes}
                                         noteObj = {item}
@@ -164,6 +170,7 @@ class Dashboard extends Component {
                         {
                             this.state.loader == true ?
                                 <View style = { styles.loaderView }>
+                                    <Text> Fundoo Keep </Text>
                                     <Spinner />
                                 </View>
                                 :
@@ -182,6 +189,7 @@ class Dashboard extends Component {
                                             noteObj = {item}
                                             Title = { item.title }
                                             Data = { item.note }
+                                            color = { item.color }
                                             GridStatus = {this.state.gridNotes}
                                             navigateToCreateNotes = {this.navigateToCreateNotes}
                                             Date = { item.date }
@@ -203,8 +211,9 @@ class Dashboard extends Component {
                                 data = { this.state.unpinData }
                                 renderItem = {({ item }) =>
                                     <NoteCard
-                                        Title = {item.title}
-                                        Data = {item.note}
+                                        Title = { item.title }
+                                        Data = { item.note }
+                                        color = { item.color }
                                         GridStatus = {this.state.gridNotes}
                                         navigateToCreateNotes = {this.navigateToCreateNotes}
                                         noteObj = {item}
@@ -255,7 +264,7 @@ class Dashboard extends Component {
                         >
                     </FAB>
                 
-                <Overlay
+                {/* <Overlay
                     isVisible = {this.state.isVisible}
                     windowBackgroundColor = " rgba(255, 255, 255, .5) "
                     overlayBackgroundColor = "#696969"
@@ -267,10 +276,10 @@ class Dashboard extends Component {
                             isVisible: false
                         })
                     }}
-                >
-                    <View style = {styles.overlayView}>
+                > */}
+                    {/* <View style = {styles.overlayView}> */}
 
-                        <View style = { styles.avtarView} >
+                        {/* <View style = { styles.avtarView} >
                             {/* <Avatar
                                 size = {'medium'}
                                 rounded
@@ -280,14 +289,15 @@ class Dashboard extends Component {
                                 activeOpacity = {0.7}
                                 >
                             </Avatar> */}
-                            <ProfilePic
+                            {/* <ProfilePic
                                 logOut = { this.logout }
-                            />
-                        </View>
+                                {...this.props}
+                            /> */}
+                        {/* </View> */} 
 
                         
 
-                        <View style = {styles.overlayText}>
+                        {/* <View style = {styles.overlayText}>
 
                             <View style = {styles.overlayTitle}>
                                 <Text style = {{ fontSize: 20, }}>
@@ -301,20 +311,20 @@ class Dashboard extends Component {
                                 </Text>
                             </View>
 
-                        </View>
+                        </View> */}
 
-                    </View>
+                    {/* </View> */}
 
-                    <View style = {styles.overlayButton}>
+                    {/* <View style = {styles.overlayButton}>
                         <Button
                             title = '  SIGN OUT  '
                             type = { this.state.signIn ? 'solid' : 'solid' }
                             onPress = { this.logout } 
                         >
                         </Button>
-                    </View>
+                    </View> */}
 
-                </Overlay>
+                {/* </Overlay> */}
             </View>
 
         );

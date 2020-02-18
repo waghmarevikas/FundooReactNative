@@ -24,6 +24,7 @@ export default class ProfilePic extends Component {
             firstName : '',
             lastName : '',
             ProfileImage : null,
+            user : null,
         }
     }
 
@@ -72,19 +73,20 @@ export default class ProfilePic extends Component {
         return colorArray[random];
     }
 
-    logOutUser = () =>{
-        this.setState ({ visible : false},()=>{
-            this.props.logOut
-        })
+    logOutUser = () => {
+        this.setState ({ visible : false },
+            this.props.navigation.navigate('LoginPage')
+        )
 
     }
-    componentDidMount = async () => {
+    componentDidMount = async () => {       
         getUserDetails(async (snapshot) => {
             this.setState({
                 userObj : snapshot,
                 firstName : snapshot.firstName,
                 lastName : snapshot.lastName,
-                ProfileImage : snapshot.ProfileImage 
+                ProfileImage : snapshot.ProfileImage ,
+                user : snapshot.userData
             })
         })
     }
@@ -92,19 +94,30 @@ export default class ProfilePic extends Component {
   render() {
     return (
         <View>
-            <Avatar
-                type = { 'image' }
-                size = { 35 }
-                image = { <Image source = {{ uri : this.state.ProfileImage }}/>}
-                onPress = { ()=>{ this.setState({ visible : !this.state.visible })}}
-            />
+                <Avatar
+                    type =  {   
+                                this.state.userObj === null || 
+                                this.state.userObj.ProfileImage === undefined ? 
+                                "text" : 'image'
+                            }
+                    content = { 
+                                this.state.userObj !== null 
+                                && (this.state.userObj.firstName).charAt(0)
+                              }
+                    contentColor = { 'white' }
+                    size = { 45 }
+                    color = { this.randomColor() }
+                    image = { this.state.ProfileImage !== null 
+                        && <Image source = {{ uri: this.state.userObj.ProfileImage }} />}
+                    onPress = { ()=>{ this.setState({ visible : !this.state.visible })}}
+                />
 
             <Dialog
                 visible = {this.state.visible}
                 onTouchOutside = {() => this.setState({ visible: false })}
                 style = {
                     {
-                        width: 400,
+                        width: 300,
                         padding: 10,
                     }
                 }
@@ -118,10 +131,10 @@ export default class ProfilePic extends Component {
                             }
                     content = { 
                                 this.state.userObj !== null 
-                                // && (this.state.userObj.firstName).charAt(0)
+                                && (this.state.userObj.firstName).charAt(0)
                               }
                     contentColor = { 'white' }
-                    size = { 100 }
+                    size = { 150 }
                     color = { this.randomColor() }
                     image = { this.state.ProfileImage !== null 
                         && <Image source = {{ uri: this.state.userObj.ProfileImage }} />}

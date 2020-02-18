@@ -14,33 +14,33 @@ import TrashNotes from '../components/AllNotes/TrashNotes';
 import LabledNotes from '../components/AllNotes/EditLabels';
 import NoteChart from '../components/AllNotes/NoteChart';
 
-const reminderImage = require('../Asset/reminder.png')
-const notesImage = require('../Asset/notes.png')
-const archiveImage = require('../Asset/archive.png');
-const trashImage = require('../Asset/trash.png')
-const settingImage = require('../Asset/setting.png');
-const helpImage = require('../Asset/help.png');
-const addLable = require('../Asset/plusadd.png');
+const reminderImage = require('../Asset/bell.jpeg')
+const notesImage = require('../Asset/notes.jpeg')
+const archiveImage = require('../Asset/archive.jpeg');
+const trashImage = require('../Asset/delete.jpeg')
+const settingImage = require('../Asset/settings.png');
+const helpImage = require('../Asset/feedback.jpeg');
+const addLable = require('../Asset/plus.jpeg');
 const chart = require('../Asset/chart.png')
 const DrawerNavigation = createDrawerNavigator({
 
 
     Notes: { screen: Dashboard, params : { 'title' : 'Search your Notes'}, navigationOptions : 
         { drawerIcon : <Image source = { notesImage } 
-        style = {{ width: 20, height: 20, }}></Image> }},
+        style = {{ width: 25, height: 38, }}></Image> }},
 
     
     Reminders: { screen : Reminder, params : { 'title' : 'Reminders'},navigationOptions : 
         { drawerIcon : <Image source = { reminderImage } 
-         style ={{ width : 20 , height : 20}}></Image>} },
+         style ={{ width : 25 , height : 25 }}></Image>} },
     
     CreateLable : { screen : LabledNotes, params : { 'title' : 'Lable Notes'}, navigationOptions :
         { drawerIcon : <Image source = { addLable } 
-        style ={{ width : 20 , height : 20}}></Image>}},
+        style ={{ width : 25 , height : 25 }}></Image>}},
 
     ArchiveNotes: { screen : ArchiveNotes,params : { 'title' : 'Archive Notes'} ,navigationOptions : 
         { drawerIcon : <Image source = { archiveImage } 
-        style ={{ width : 20 , height : 20}}></Image>}},
+        style ={{ width : 25 , height : 25 }}></Image>}},
 
     TrashNotes: { screen : TrashNotes, params : { 'title' : 'Trash Notes'},navigationOptions :
         { drawerIcon: <Image source = { trashImage } 
@@ -48,15 +48,15 @@ const DrawerNavigation = createDrawerNavigator({
 
     SettingMenu: { screen : SettingMenu, navigationOptions :
         { drawerIcon: <Image source = { settingImage } 
-        style ={{ width : 20 , height : 20}}></Image>}},
+        style ={{ width : 25 , height : 25 }}></Image>}},
 
     HelpAndFeedback: { screen : HelpAndFeedback, navigationOptions : 
         { drawerIcon: <Image source = { helpImage } 
-        style ={{ width : 20 , height : 20}}></Image>}},
+        style ={{ width : 25 , height : 25 }}></Image>}},
 
     NoteChart : { screen : NoteChart, navigationOptions : 
         { drawerIcon: <Image source = { chart } 
-        style ={{ width : 20 , height : 20}}></Image>} }
+        style ={{ width : 25 , height : 25 }}></Image>} }
       
 },{
     initialRouteName:'Notes'

@@ -28,8 +28,12 @@ constructor(props) {
   };
 
   AddLabelOnNotes = () =>{
+    console.log( " Add labels calls... ");
     this.setState({ visible : false })
+    this.props.labelsFun
     this.props.navigation.navigate('AddLabels');
+    // this.props.addLabelsOnNotes
+    // this.props.labelArray
   } 
 
   render() {
@@ -42,6 +46,7 @@ constructor(props) {
             flexDirection: 'row',
             width : '98%',
             justifyContent : 'space-between'
+            // ,backgroundColor : 'red'
           }}>
                <View >
                     <Icon
@@ -65,18 +70,22 @@ constructor(props) {
                     />      
                 }
             >
+
             <Menu.Item 
               onPress = { this.props.handleTrashNoteSubmit }  
               title = 'delete' icon = "delete"
             />
+
             <Menu.Item 
               onPress = { this.closeMenu } 
               title = 'Make a copy' icon = 'image-filter-none' 
             />
+
             <Menu.Item 
               onPress = { this.closeMenu } 
               title = 'Send' icon = 'share-variant' 
             />
+
             <Menu.Item 
               onPress = { this.closeMenu } 
               title = 'Collaborator' icon = 'account-plus-outline' 
@@ -84,7 +93,7 @@ constructor(props) {
 
             <Menu.Item 
               title = 'Labels' icon = 'label-outline' 
-              onPress = {()=>{ this.setState({visible : false},this.props.navigateForaddLabel )}   }
+              onPress = {()=>{ this.setState({visible : false},this.AddLabelOnNotes )}   }
             />
 
             <ColorPalette
@@ -92,8 +101,9 @@ constructor(props) {
               onChange = { color => this.props.handleColor(color)}
               defaultColor = { '#ffff' }
               colors = {['#ffff' ,
-               '#20b2aa', '#E74C3C', '#ffa500', 
-                '#8E44AD', '#40e0d0','#008000',
+              '#bdb76b', '#ffc0cb', '#d8bfd8', 
+                '#8E44AD', '#40e0d0','#9acd32',
+                ,
               ]}
             />
 

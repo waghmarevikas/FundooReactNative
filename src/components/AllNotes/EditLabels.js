@@ -25,9 +25,7 @@ export default class EditLabels extends Component {
   backDashboard = () =>{
     this.props.navigation.navigate('Notes');
   }
-
   
-
   componentDidMount = () => {
     getLabels((labels) => {
       let labelsArray = []

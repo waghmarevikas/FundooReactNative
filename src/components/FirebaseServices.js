@@ -45,7 +45,7 @@ export  function createUser(email,password,obj,callback) {
 
   export async function getUserDetails(callback){
     const uid = await AsyncStorage.getItem('uid');
-    const ref = firebase.database().ref('/users/'+uid+'/notes/')
+    const ref = firebase.database().ref('/users/'+uid+'/userData/')
     ref.on('value',(snapshot) => {
       callback(snapshot.val())
     })
@@ -114,7 +114,7 @@ export  function createUser(email,password,obj,callback) {
 
   export async function saveProfile(imgSource){
      const uid = await AsyncStorage.getItem('uid');
-    firebase.database().ref('/users/'+uid+'/notes/')
+    firebase.database().ref('/users/'+uid+'/userData/')
     .update({ ProfileImage : imgSource }) 
   }
 

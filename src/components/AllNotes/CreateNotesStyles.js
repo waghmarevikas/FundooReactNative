@@ -70,7 +70,7 @@ export default styles = StyleSheet.create({
     textInputView : {
         display : 'flex',
         flexDirection : 'column',
-        // backgroundColor : 'white',
+        backgroundColor : 'white',
         marginTop : '2%',
         marginLeft : '3%',
         marginRight : '2%',

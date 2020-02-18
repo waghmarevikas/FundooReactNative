@@ -205,7 +205,8 @@ export default class CreateAccount extends Component {
                         <CheckBox value={this.state.showPassword} 
                             onChange = {()=>this.setState({showPassword : !this.state.showPassword})} >
                         </CheckBox>
-                        <Text style = {{fontSize : 15,}}>
+                        <Text 
+                            style = {{fontSize : 17, marginTop : 4, color : '#a9a9a9'}}>
                             Show Password
                         </Text>
                         </View>

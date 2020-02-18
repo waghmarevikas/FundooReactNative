@@ -26,10 +26,10 @@ import {StyleSheet} from 'react-native';
 
     password : {
         display : 'flex',
-        marginTop : '10%',
+        marginTop : '7%',
         width : '80%',
         marginLeft : '10%',
-        paddingRight : '13%',
+        height : 'auto',
     },
     passwordView : {
 
@@ -62,9 +62,10 @@ import {StyleSheet} from 'react-native';
     },
     imageView : {
         display : 'flex',
-        marginTop : '16%',
-        marginRight : '20%',
-        marginLeft : '-10%',
+        flexDirection : 'row',
+        // marginTop : '16%',
+        // marginRight : '20%',
+        marginLeft : '9%',
     },
     registration : {
         display : 'flex',

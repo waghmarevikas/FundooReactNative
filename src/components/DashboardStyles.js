@@ -104,13 +104,11 @@ export default styles = StyleSheet.create({
         backgroundColor : 'red',
     },
     loaderView : {
+        marginTop : '30%',
         display : 'flex',
         height : '100%',
         width : '100%',
-        // flex : 1,
         justifyContent:"center",
-        alignItems:'center',
-        // backgroundColor : '#9932cc',
     },
     topbarView : {
         display : 'flex',
