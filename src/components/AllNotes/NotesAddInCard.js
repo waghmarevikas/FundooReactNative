@@ -4,6 +4,7 @@ import { Text, View} from 'react-native';
 import { getNotes } from '../FirebaseServices';
 import { Chip } from 'material-bread'
 import { Icon, Overlay } from 'react-native-elements'
+import FastImage from 'react-native-fast-image'
 import moment from 'moment';
 
 import styles from './NotesAddInCardStyles';
@@ -19,6 +20,7 @@ class NotesAddInCard extends Component {
     }
      
   render() {
+    
  return (
       <View style = { this.props.GridStatus ? styles.gridTrueView :  styles.mainView }>
         <Card 
@@ -40,6 +42,23 @@ class NotesAddInCard extends Component {
                     text = { moment(this.props.Date).format('MMM Do YY') }
                     leftIcon = { <Icon name = 'alarm' type = 'material-community'/>}
                   /> 
+                </Card.Content>
+                <Card.Content>
+                  {
+                    this.props.image !== undefined  && this.props.image !=='' ?
+                      
+                        <FastImage
+                            style = {{ width: '100%', height: 150, }}
+                            source = {{
+                                uri : this.props.image,
+                                headers : { Authorization: 'someAuthToken' },
+                                priority : FastImage.priority.normal,
+                            }}
+                            resizeMode = { FastImage.resizeMode.stretch }
+                        />
+                      :
+                      null
+                    }
                 </Card.Content>
         </Card>
       </View>

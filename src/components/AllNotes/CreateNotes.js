@@ -5,12 +5,14 @@ import { Menu, Provider } from 'react-native-paper'
 import styles from './CreateNotesStyles';
 import firebase from '../FireBase'; 
 import { createUserNote , } from '../FirebaseServices'
+import PushNotification from "react-native-push-notification"
 import MenuList from './MenuList';
 import LabelAdd from './AddLabelOnCard';
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import Moment from 'moment';
 import { Chip } from 'material-bread';
 import moment from 'moment';
+import FastImage from 'react-native-fast-image';
 
 var util = require('../AllNotes/CreateNotesModel');
 var objNotesModel = new util.UserNotesModel();
@@ -21,16 +23,15 @@ class CreateNotes extends Component {
         
         this.fetchNote = this.props.navigation.getParam('noteObj',null) 
         this.fetchLabel = this.props.navigation.getParam('totalLabels',null) 
-        // console.log(" fetch notes labels ",this.fetchLabel.lenght);
-        // console.log("Name of Labels ... ",this.fetchLabel.labelName)
-     
+        
         this.state = {
-            title : this.fetchNote === null ? '': this.fetchNote.title,
+            title : this.fetchNote === null ? '' : this.fetchNote.title,
             note : this.fetchNote === null ? '': this.fetchNote.note,
             pin : this.fetchNote === null ? false : this.fetchNote.pin,
             archive : this.fetchNote === null ? false : this.fetchNote.archive,
             trash : this.fetchNote === null ? false : this.fetchNote.trash,
             color : this.fetchNote === null ? '' : this.fetchNote.color,
+            imgURL : this.fetchNote === null ? '' : this.fetchNote.imgURL,
 
             label : this.fetchNote === null ? '' : 
             this.fetchNote.label !== undefined ? this.fetchNote.label : '',
@@ -50,9 +51,14 @@ class CreateNotes extends Component {
             reminderDate : false,
             checkLabelVisible : false,
             labelArray : [],
+            dialogVisible: false,
+            dateTime : '',
+            date2:'',
+            time2 : '',
         }
 
         this.moreRef = React.createRef();
+        this.moreRefPlus = React.createRef();
     }
 
     handleNoteSubmit = () => {
@@ -62,6 +68,13 @@ class CreateNotes extends Component {
         }
         else
         {
+            // PushNotification.localNotificationSchedule({
+            //     //... You can use all the options from localNotifications
+            //     message : this.state.title,
+            //     subText : this.state.note,
+            //     date : this.state.dateTime
+            //   });
+
             var obj = {
                 title : this.state.title,
                 note : this.state.note,
@@ -73,6 +86,7 @@ class CreateNotes extends Component {
                 time : this.state.time,
                 reminderDate  : this.state.reminderDate,
                 label : this.state.label,
+                imgURL : this.state.imgURL,
             }
             objNotesModel.handleCreateNotes(obj)    
         }
@@ -91,6 +105,7 @@ class CreateNotes extends Component {
                 time : this.state.time,
                 reminderDate  : this.state.reminderDate,
                 label : this.state.label,
+                imgURL : this.state.imgURL
             }
         objNotesModel.NoteCardsUpdate(obj, this.fetchNote.noteId);
         this.props.navigation.navigate('Dashboard')
@@ -116,6 +131,7 @@ class CreateNotes extends Component {
                     time : this.state.time,
                     reminderDate  : this.state.reminderDate,
                     label : this.state.label,
+                    imgURL : this.state.imgURL,
                 }
                 objNotesModel.handleCreateNotes(obj)
             })  
@@ -135,6 +151,7 @@ class CreateNotes extends Component {
             time : this.state.time,
             reminderDate  : this.state.reminderDate,
             label : this.state.label,
+            imgURL : this.state.imgURL,
         }
         objNotesModel.NoteCardsUpdate(obj, this.fetchNote.noteId);
         this.props.navigation.navigate('Dashboard')
@@ -159,6 +176,7 @@ class CreateNotes extends Component {
                     time : this.state.time,
                     reminderDate  : this.state.reminderDate,
                     label : this.state.label,
+                    imgURL : this.state.imgURL,
                 }
                 console.log("obj....",obj);
                 objNotesModel.NoteCardsUpdate(obj, this.fetchNote.noteId);
@@ -187,6 +205,7 @@ class CreateNotes extends Component {
                     time : this.state.time,
                     reminderDate  : this.state.reminderDate,
                     label : this.state.label,
+                    imgURL : this.state.imgURL,
                 }
                 objNotesModel.handleCreateNotes(obj)
             })  
@@ -199,17 +218,6 @@ class CreateNotes extends Component {
             console.log("asdftyfsddf",this.state.isMenu);
             
         }) 
-    }
-
-    handleDateTime = () =>{
-        if(this.state.date !== null && this.state.time !== null ){
-            this.setState({
-                isDatePickerVisible : false,
-                isVisible : false,
-                chipVisible : true,
-                reminderDate  : true,
-            })
-        }  
     }
 
     handleSetColor = (takeColor) =>{
@@ -242,6 +250,104 @@ class CreateNotes extends Component {
         
     }
 
+    handleImage = (uri) =>{
+        this.setState({ imgURL : uri })
+    }
+
+    handleCaptureImage = (uri) =>{
+        this.setState({ imgURL : uri })
+    }
+
+    handleShowDialog = (status) => {
+        this.setState({ dialogVisible: status })
+    };
+
+    handleCloseDialog = (status, date, time, dateTime) => {
+        this.setState({ dialogVisible : status, date: date, time: time, dateTime : dateTime })
+    };
+
+    setDate = () => {
+        var time1 =
+        this.setState({ date: false });
+    };
+    
+    setTime = () => {
+        this.setState({ date: false });
+    };
+    
+    
+    handleDatePicked = (date) => {
+        var mj = JSON.stringify(date)
+        var Date1 = mj.slice(1, 11)
+        this.setState({ date: Date1 , isDatePickerVisible : false,
+            date2 : moment(date).format()
+        },()=>{ console.log( "Date is idjf'lj'.......",this.state.date);
+        })
+    };
+    
+    handleTimePicked = (date) => {
+        var d = " " + date
+        var dm = d.slice(17, 25)
+        this.convert12hour(dm);
+        var mj = JSON.stringify(date)
+        var Time1 = mj.slice(11, 25)
+        this.setState({ isTimePickerVisible : false, time : Time1,
+            time2 : moment(Time1).format('hh : mm a')
+         },
+            ()=>{ console.log(" Time is.....",this.state.time )})
+    };
+    
+    handleNotification = () => {
+        var date = this.state.date + this.state.time
+        var date23 = new Date(date)
+
+        this.setState({ dateTime : date23 },()=>{
+            // console.log(date23);
+            // if (this.state.time !== null && this.state.date !== null) {
+            //   this.handleSave(this.state.date, this.state.setTime, date23)
+            // }
+            // else {
+            //   alert('entrer all details')
+            // }
+            PushNotification.localNotificationSchedule({
+                //... You can use all the options from localNotifications
+                message : this.state.title,
+                subText : this.state.note,
+                date : this.state.dateTime
+              });
+        });
+        
+    }
+
+    convert12hour = (dm) => {
+        var timeString = dm;
+        var H = +timeString.substr(0, 2);
+        var h = H % 12 || 12;
+        var ampm = (H < 12 || H === 24) ? "AM" : "PM";
+        timeString = h + timeString.substr(2, 3) + ampm;
+        this.setState({ setTime: timeString })
+    }
+
+    handleDateTime = () =>{
+        if(this.state.date !== null && this.state.time !== null ){
+
+            // PushNotification.localNotificationSchedule({
+            //         //... You can use all the options from localNotifications
+            //     message : this.state.title,
+            //     subText : this.state.note,
+            //     date : this.state.dateTime
+            // });
+
+            this.setState({
+                isDatePickerVisible : false,
+                isVisible : false,
+                chipVisible : true,
+                reminderDate  : true,
+            },()=>{
+                this.handleNotification();
+            })
+        }  
+    }
   render() {
     return (
     
@@ -265,7 +371,7 @@ class CreateNotes extends Component {
                 <Icon
                     name = { this.state.pin ?  'pin' : 'pin-outline'}
                     type = 'material-community'
-                    onPress = { ()=> this.setState({pin :! this.state.pin})}
+                    onPress = { ()=> this.setState({ pin :! this.state.pin })}
                     >
                 </Icon>
              </View>
@@ -347,7 +453,30 @@ class CreateNotes extends Component {
                 </TextInput>
 
           </View>
-      
+
+        {
+            this.state.imgURL !== undefined && this.state.imgURL !== '' ? 
+            <View 
+                style = {{ 
+                    // backgroundColor : 'blue' , 
+                    width : '80%', 
+                    height : '60%', 
+                    marginLeft : 35 
+                }} 
+                >
+                <FastImage
+                    style = {{ width : 150, height : 150, }}
+                    source = {{
+                        uri : this.state.imgURL,
+                        headers : { Authorization : 'someAuthToken' },
+                        priority : FastImage.priority.normal,
+                    }}
+                    resizeMode = { FastImage.resizeMode.stretch }
+                />
+            </View> 
+            : null
+        }
+  
 
           <View style = { styles.chipView }>
                 <Chip
@@ -391,8 +520,11 @@ class CreateNotes extends Component {
                         navigateForaddLabel = { this.navigateForaddLabel }
                         addLabelsOnNotes = { this.addLabelsOnNotes } 
                         labelArray = { this.addLabelsInArray } 
-                        { ...this.props }
+                        // { ...this.props }
                         labelsFun = { this.labelsFun }
+                        handleImage = { this.handleImage }
+                        handleCaptureImage = { this.handleCaptureImage }
+                        moreRefPlus = { this.moreRefPlus }
                  />
 
              <Overlay
@@ -444,22 +576,14 @@ class CreateNotes extends Component {
                     </View>
                    
                     <DateTimePickerModal
-                        isVisible = { this.state.isDatePickerVisible}
+                        isVisible = { this.state.isDatePickerVisible }
                         mode = "date"
-                        onConfirm = { (date)=>{
-                            console.log('Date is...',date);
-                            this.setState({ isDatePickerVisible : false, 
-                                date : moment(date).format() })           
-                        }}
+                        onConfirm = { this.handleDatePicked }
                     />
                     <DateTimePickerModal
-                        isVisible = { this.state.isTimePickerVisible}
+                        isVisible = { this.state.isTimePickerVisible }
                         mode = "time"
-                        onConfirm = {(time)=>{
-                            console.log("Time is ...",time);
-                            this.setState({ isTimePickerVisible : false, 
-                            time : moment(time).format('hh : mm a') })
-                        }}
+                        onConfirm = { this.handleTimePicked }
                     />
                 </View>  
             </Overlay> 

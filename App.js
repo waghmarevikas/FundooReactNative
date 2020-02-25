@@ -11,7 +11,8 @@ import Demo from './src/components/login module/DemoProgram/OuttextfieldDemo';
 import Dashboard from './src/components/Dashboard';
 import Home from '../fundookeep/src/components/login module/DemoProgram/Home';
 import Home2 from '../fundookeep/src/components/login module/DemoProgram/Home2';
-import AppDrawerNavigation from '../fundookeep/src/Navigation/DrawerNavigation'
+import AppDrawerNavigation from '../fundookeep/src/Navigation/DrawerNavigation';
+import DragAndDropNotes from '../fundookeep/src/components/AllNotes/DragAndDropNotes'
 
 export default class App extends Component {
     constructor(props) {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, PermissionsAndroid , AsyncStorage, Image } from 'react-native';
-import { Title, Paragraph} from 'react-native-paper';
+import { Title, Paragraph, Avatar as AvatarP} from 'react-native-paper';
 import { getUid, saveProfile, getUserDetails } from '../FirebaseServices';
 import ImagePicker from 'react-native-image-picker';
 import { Dialog, Avatar, Button } from 'material-bread';
@@ -79,7 +79,8 @@ export default class ProfilePic extends Component {
         )
 
     }
-    componentDidMount = async () => {       
+    componentDidMount = async () => { 
+        console.log("componentDidMount of Profile Pic");    
         getUserDetails(async (snapshot) => {
             this.setState({
                 userObj : snapshot,
@@ -87,11 +88,22 @@ export default class ProfilePic extends Component {
                 lastName : snapshot.lastName,
                 ProfileImage : snapshot.ProfileImage ,
                 user : snapshot.userData
+            },()=>{
+                console.log("state of Profile Pic",this.state);
+                
+            })
+        })
+    }
+    componentWillUnmount = async () =>{
+        getUserDetails(async(snapshot)=>{
+            this.setState({ ProfileImage : snapshot.ProfileImage },()=>{
+                console.log("hhhhhhhhhhhhhhhhhh");  
             })
         })
     }
 
   render() {
+      console.log("picture is...",this.state.ProfileImage);
     return (
         <View>
                 <Avatar
@@ -107,10 +119,35 @@ export default class ProfilePic extends Component {
                     contentColor = { 'white' }
                     size = { 45 }
                     color = { this.randomColor() }
-                    image = { this.state.ProfileImage !== null 
-                        && <Image source = {{ uri: this.state.userObj.ProfileImage }} />}
+                    image = { this.state.ProfileImage !== null && this.state.ProfileImage !== undefined
+                        && <Image source = {{ uri: this.state.ProfileImage }} />}
                     onPress = { ()=>{ this.setState({ visible : !this.state.visible })}}
                 />
+            {/* {
+                this.state.userObj !== null && this.state.userObj !== undefined ?
+                
+                this.state.userObj.ProfileImage === null || this.state.userObj.ProfileImage === undefined ? 
+                <AvatarP.Text 
+                        size = { 50 } 
+                        label = { this.state.userObj.firstName !== null && 
+                            this.state.userObj.firstName !== undefined ? 
+                            this.state.userObj.firstName.charAt(0) : '' 
+                        }
+                        onPress = { ()=>{ this.setState({ visible : !this.state.visible })}}
+                />
+                :
+                <AvatarP.Image 
+                        size = { 50 } 
+                        source = {this.state.userObj.ProfileImage}
+                        // source = {{ 
+                        //     uri : this.state.userObj.ProfileImage !== null && 
+                        //     this.state.userObj.ProfileImage !== undefined ?
+                        //     this.state.userObj.ProfileImage : ''
+                        // }}
+                        onPress = { ()=>{ this.setState({ visible : !this.state.visible })}}
+                />
+                : null
+            } */}
 
             <Dialog
                 visible = {this.state.visible}

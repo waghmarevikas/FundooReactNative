@@ -4,11 +4,20 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
-import com.airbnb.android.react.maps.MapsPackage;
-import com.bmustapha.reactlibrary.RNGeoFencePackage;
-import com.surialabs.rn.geofencing.GeoFencingPackage;
-import com.simplegeofencing.reactnative.RNSimpleNativeGeofencing;
+import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
+import com.facebook.react.ReactNativeHost;
+import com.facebook.react.ReactPackage;
+import com.facebook.soloader.SoLoader;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
+//import com.airbnb.android.react.maps.MapsPackage;
+//import com.bmustapha.reactlibrary.RNGeoFencePackage;
+//import com.surialabs.rn.geofencing.GeoFencingPackage;
+//import com.simplegeofencing.reactnative.RNSimpleNativeGeofencing;
 import com.imagepicker.ImagePickerPackage;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+
 public class MainApplication extends Application implements ReactApplication {
 
     private final ReactNativeHost mReactNativeHost =
@@ -72,9 +81,9 @@ public class MainApplication extends Application implements ReactApplication {
     }
 }
 
-import com.oblador.vectoricons.VectorIconsPackage;
-import com.facebook.react.ReactNativeHost;
-import com.facebook.react.ReactPackage;
-import com.facebook.soloader.SoLoader;
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
+//import com.oblador.vectoricons.VectorIconsPackage;
+//import com.facebook.react.ReactNativeHost;
+//import com.facebook.react.ReactPackage;
+//import com.facebook.soloader.SoLoader;
+//import java.lang.reflect.InvocationTargetException;
+//import java.util.List;

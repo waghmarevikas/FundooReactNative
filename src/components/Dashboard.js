@@ -5,14 +5,18 @@ import { Badge, Appbar, BottomNavigation, Drawer, FAB, Card } from 'react-native
 import { SearchBar, Avatar, Overlay, Button, } from 'react-native-elements';
 import { Spinner } from 'native-base';
 import { Chip } from 'material-bread';
+import PushNotification from 'react-native-push-notification'
 import NoteCard from '../../src/components/AllNotes/NotesAddInCard';
-import { getNotes } from './FirebaseServices';
+import { getNotes, getUid } from './FirebaseServices';
 import TopAppbar from '../../src/components/login module/TopAppbar';
 import ProfilePic from '../components/AllNotes/ProfilePic';
+import moment from 'moment';
 
 const grid = require('../../src/Asset/grid.png')
 const accountIcon = require('../../src/Asset/account.png')
-
+var dateTime, note, title, systemTime;
+const URL = "https://www.google.com/"
+// var SendIntentAndroid = require("react-native-send-intent");
 
 class Dashboard extends Component {
     constructor(props) {
@@ -32,13 +36,14 @@ class Dashboard extends Component {
             loader: true,
             ArchiveTouch : false,
             appbarTitle : this.fetchTitle,
-
+            currentTime : '',
+            dialogVisible: false,
+            profileVisible: false,
         };
     }
     
     logout = () => {
         console.log(" logout in dashboard .... ");
-        
         this.setState({
             isVisible: false,
             signIn: true,
@@ -66,7 +71,86 @@ class Dashboard extends Component {
         this.props.navigation.openDrawer()
     }
 
+    showNotification = (dateTime, note, title) => {
+
+        if (this.state.currentTime === dateTime) {
+          PushNotification.localNotification({
+            title : title,
+            message : note,
+            color : 'white',
+            vibrate : true,
+          })
+        }
+    }
+
+    //Remove listeners allocated in createNotificationListeners()
+    componentWillUnmount() {
+            this.notificationListener
+            this.notificationOpenedListener
+    }
+
+    async createNotificationListeners() {
+        /*
+        * Triggered when a particular notification has been received in foreground
+        *
+    */
+        console.log('notification'),
+
+      this.notificationListener = firebase.notifications().onNotification((notification) => {
+        const { title, body } = notification;
+        this.showAlert(title, body);
+      });
+
+    /*
+    * If your app is in background, you can listen for when a notification is clicked / tapped / opened as follows:
+    * */
+    this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
+      const { title, body } = notificationOpen.notification;
+      this.showAlert(title, body);
+    });
+
+    /*
+    * If your app is closed, you can check if it was opened by a notification being clicked / tapped / opened as follows:
+    * */
+    const notificationOpen = await firebase.notifications().getInitialNotification();
+    if (notificationOpen) {
+      const { title, body } = notificationOpen.notification;
+      this.showAlert(title, body);
+    }
+    /*
+    * Triggered for data only payload in foreground
+    * */
+    this.messageListener = firebase.messaging().onMessage((message) => {
+      //process data message
+      console.log(JSON.stringify(message));
+    });
+  }
+
+    showAlert(title, body) {
+        Alert.alert(
+        title, body,
+        [
+            { text: 'OK', onPress: () => console.log('OK Pressed') },
+        ],
+        { cancelable: false },
+        );
+    }
+
+    handleCancel = () =>{
+        this.setState({ dialogVisible: false, profileVisible: false  })
+
+    }
+
     componentDidMount = () => {
+        //Get user Id from firebase services
+        // getUid()
+        this.showNotification(dateTime, note, title)
+        var date = moment()
+          .utcOffset('+05:30')
+          .format('YYYY-MM-DD LT');
+        this.setState({
+          currentTime: date
+        });
         getNotes((notes) => {
             var pinData = [],unpinData=[];
             if(notes !== null){ 
@@ -133,6 +217,7 @@ class Dashboard extends Component {
                                             Title = { item.title }
                                             Data = { item.note }
                                             color = { item.color }
+                                            image = { item.imgURL }
                                             GridStatus = { this.state.gridNotes }
                                             navigateToCreateNotes = { this.navigateToCreateNotes }
                                             Date = { item.date }
@@ -158,6 +243,7 @@ class Dashboard extends Component {
                                         Title = { item.title }
                                         Data = { item.note }
                                         color = { item.color }
+                                        image = { item.imgURL }
                                         GridStatus = {this.state.gridNotes}
                                         navigateToCreateNotes = {this.navigateToCreateNotes}
                                         noteObj = {item}
@@ -190,6 +276,7 @@ class Dashboard extends Component {
                                             Title = { item.title }
                                             Data = { item.note }
                                             color = { item.color }
+                                            image = { item.imgURL }
                                             GridStatus = {this.state.gridNotes}
                                             navigateToCreateNotes = {this.navigateToCreateNotes}
                                             Date = { item.date }
@@ -214,6 +301,7 @@ class Dashboard extends Component {
                                         Title = { item.title }
                                         Data = { item.note }
                                         color = { item.color }
+                                        image = { item.imgURL }
                                         GridStatus = {this.state.gridNotes}
                                         navigateToCreateNotes = {this.navigateToCreateNotes}
                                         noteObj = {item}

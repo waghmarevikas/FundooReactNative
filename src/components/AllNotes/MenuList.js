@@ -1,20 +1,47 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Icon } from 'react-native-elements';
+import { List, ListItem, ListExpand } from 'material-bread';
 import { Button, Paragraph, Menu, Divider, Provider } from 'react-native-paper';
 import ColorPalette from 'react-native-color-palette'
+import moment from 'moment';
+import ImagePicker from 'react-native-image-picker';
+import RBSheet from 'react-native-raw-bottom-sheet';
+
+
+const options = {
+  title: 'Select Avatar',
+  customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
+  storageOptions: {
+      skipBackup: true,
+      path: 'images',
+  },
+};
+
 
 export default class MyComponent extends React.Component {
 constructor(props) {
   super(props)
   this.state = {
       visible : false,
+      visiblePlus : false,
       selectedColor : null,
+      currentTime : '',
+
+      filepath: {
+        data: '',
+        uri: ''
+      },
+
+        fileData: '',
+        fileUri: ''
   };
 };
 
 
   openMenu = () => this.setState({ visible: true });
+
+  openMenuPlus = () => this.setState({ visiblePlus : true })
 
   handleColor = () => {
     this.setState({
@@ -27,6 +54,10 @@ constructor(props) {
     this.props.handleTrashNoteSubmit})
   };
 
+  closeMenuPlus = () =>{
+    this.setState({ visiblePlus : false })
+  }
+
   AddLabelOnNotes = () =>{
     console.log( " Add labels calls... ");
     this.setState({ visible : false })
@@ -36,27 +67,149 @@ constructor(props) {
     // this.props.labelArray
   } 
 
+  componentDidMount() {
+    var date = moment()
+      .utcOffset('+05:30')
+      .format(' hh:mm A');
+    this.setState({
+      currentTime: date
+    })
+  }
+
+  launchCamera = () => {
+        
+    ImagePicker.launchCamera(options, (response) => {
+        console.log('Response = ', response);
+
+        if (response.didCancel) {
+            console.log('User cancelled image picker');
+        } else if (response.error) {
+            console.log('ImagePicker Error: ', response.error);
+        } else if (response.customButton) {
+            console.log('User tapped custom button: ', response.customButton);
+            alert(response.customButton);
+        } else {
+            const source = { uri: response.uri };
+            console.log('response', JSON.stringify(response));
+            this.setState({
+                filePath: response,
+                fileData: response.data,
+                fileUri: response.uri
+            }, () => {
+                this.props.handleCaptureImage(this.state.fileUri)
+            });
+        }
+    });
+
+}
+launchImageLibrary = () => {
+   
+    ImagePicker.launchImageLibrary(options, (response) => {
+        console.log('Response = ', response);
+
+        if (response.didCancel) {
+            console.log('User cancelled image picker');
+        } else if (response.error) {
+            console.log('ImagePicker Error: ', response.error);
+        } else if (response.customButton) {
+            console.log('User tapped custom button: ', response.customButton);
+            alert(response.customButton);
+        } else {
+            const source = { uri: response.uri };
+            console.log('response', JSON.stringify(response));
+            this.setState({
+                filePath: response,
+                fileData: response.data,
+                fileUri: response.uri
+            },()=>{
+                this.props.handleImage(this.state.fileUri)
+            });
+        }
+    });
+  }
   render() {
     return (
       <Provider>
-        <View
-          style={{
-            bottom:0,
-            position : 'absolute',
-            flexDirection: 'row',
-            width : '98%',
-            justifyContent : 'space-between'
-            // ,backgroundColor : 'red'
-          }}>
-               <View >
-                    <Icon
-                        style = {{ marginTop : 10,}}
-                        name = 'plus-box-outline'
-                        type = 'material-community'
+        <View style = { styles.mainView }>
+               <View>
+                  <Icon 
+                      style = {{ marginTop : 10,}} 
+                      name = 'plus-box-outline' 
+                      type = 'material-community'
+                      onPress = { ()=>{
+                          this.RBSheet.open();
+                      } }
+                      size = { 30 } 
+                  > 
+                  </Icon>
+                      
+                    <RBSheet
+                        ref = {ref => {
+                            this.RBSheet = ref;
+                        }}
+                        height = { 270 }
+                        duration = { 250 }
+                        customStyles = {{
+                            container : {
+                                justifyContent : 'space-around',
+                                alignItems : 'flex-start'
+                            }
+                        }}
+                    >
+                    <List style = {{ width : 500 }}>
+                        <ListItem
+                            text = { 'Take Photo' }
+                            onPress = { this.launchCamera }
+                            icon = { 
+                                <Icon name = { 'camera' } size = { 25 } /> 
+                            }
+                        />
                         
-                        >
-                    </Icon>
+                        <ListItem
+                            text = { 'Choose image' }
+                            onPress = { this.launchImageLibrary }
+                            icon = { 
+                                <Icon name = { 'image' } size = { 25 } />
+                            }
+                        />
+
+                        <ListItem
+                            text = { 'Drawing' }
+                            icon = {
+                                <Icon name = { 'brush' } size = { 25 } type = 'material-community' />
+                            }
+                            onPress = { ()=>{
+                              this.RBSheet.close();
+                            }}
+                        />
+
+                        <ListItem
+                            text = { 'Recording' }
+                            icon = { 
+                                <Icon name = { 'microphone' } size = { 25} />
+                            }
+                            onPress = { ()=>{
+                              this.RBSheet.close();
+                            }}
+                        />
+
+                        <ListItem
+                            text = {'Tick boxes'}
+                            icon = {
+                                <Icon name = { 'check-box-outline' } size = {25} />
+                            }
+                            onPress = { ()=>{
+                              this.RBSheet.close();
+                            }}
+                        />   
+                    </List>
+                </RBSheet>
+                 </View>
+
+                <View>
+                    <Text style = {{ fontSize : 18}}> Edit { this.state.currentTime }</Text>
                 </View>
+
           <Menu
                 style = {{ width : '100%', marginBottom : '30%', }}
                 visible = { this.state.visible }
@@ -66,7 +219,8 @@ constructor(props) {
                         onPress = {this.openMenu} 
                         style = {{ marginTop : 10,}}
                         name = 'dots-vertical'
-                        type = 'material-community'    
+                        type = 'material-community'  
+                        size = { 30 }  
                     />      
                 }
             >
@@ -113,3 +267,14 @@ constructor(props) {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  mainView : {
+            bottom:0,
+            position : 'absolute',
+            flexDirection: 'row',
+            width : '98%',
+            justifyContent : 'space-between'
+            // ,backgroundColor : 'red'
+  },
+})

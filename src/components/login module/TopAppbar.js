@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView, AsyncStorage, FlatList } from 'react-native';
+import { View, Text, ScrollView, AsyncStorage, FlatList, TouchableOpacity } from 'react-native';
 import styles from '../DashboardStyles';
 import { Badge, Appbar, BottomNavigation, Drawer, FAB, Card } from 'react-native-paper';
 import { SearchBar, Avatar, Overlay, Button, Icon } from 'react-native-elements';
@@ -15,6 +15,9 @@ export default class TopAppbar extends Component{
             title2 : 'Reminders'
         }              
     }
+    hello = () =>{
+        this.props.navigation.navigate('SearchNotes')
+    }
     render(){
         return(
             <View style = { styles.topbarView }>
@@ -27,21 +30,32 @@ export default class TopAppbar extends Component{
 
                 <Appbar.Action 
                     icon = 'menu' 
+                    style = {{ marginLeft : '-1%'}}
                     onPress = { this.props.drawerOpen }
                     > 
                 </Appbar.Action>
 
-                <Appbar.Content
-                    title = { this.props.appbarTitle }
-                    style = {{
-                        fountSize : 8,
-                        marginRight : '1%',
-                        marginLeft : '-1%',
-                        // backgroundColor : 'red',
-                        width : 200
-                    }}
-                >
-                </Appbar.Content>
+                {/* <TouchableOpacity
+                    onPress = { this.hello }
+                    > */}
+                    <Appbar.Action
+                        onPress = { this.hello }
+                        size = {16}
+                    />
+                    
+                    <Appbar.Content
+                        title = { this.props.appbarTitle }
+                        style = {{
+                            fountSize : 3,
+                            // marginRight : '1%',
+                            marginLeft : '-5%',
+                            // marginTop : '6%',
+                            // backgroundColor : 'red',
+                            // width : 10
+                        }}
+                    /> 
+                     
+                {/* </TouchableOpacity> */}
                 {
                     this.state.title2 == this.props.appbarTitle ?
                     <Appbar.Action 
@@ -55,6 +69,7 @@ export default class TopAppbar extends Component{
 
                     <Appbar.Action
                         style = {{ marginRight: '5%' }}
+                        // size = { 25}
                         icon = { this.props.gridNotes ? 'view-grid' : 'view-stream' }
                         onPress = { this.props.togglegridNotes }
                     >
