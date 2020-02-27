@@ -23,7 +23,7 @@ export default class App extends Component {
 
   render() {
     return (
-      <AppNavigation/>
+      <AppNavigation uriPrefix = "fundookeep://"/>
     );
   }
 }
